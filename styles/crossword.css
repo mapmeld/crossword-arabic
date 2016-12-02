@@ -1,5 +1,10 @@
-html, body {
-  font-family: 'Noto Sans Myanmar', sans-serif;
+@font-face {
+  font-family: 'Noto Sans Kufi Arabic';
+  src: url(NotoKufiArabic-Regular.ttf);
+}
+
+html, body, span, strong {
+  font-family: 'Noto Sans Kufi Arabic', sans-serif;
 }
 
 canvas {
@@ -30,7 +35,7 @@ canvas {
 
 #across, #down {
   width: 300px;
-  float: left;
+  float: right;
 }
 
 #clues li {

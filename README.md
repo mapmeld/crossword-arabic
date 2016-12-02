@@ -1,17 +1,14 @@
 # Crossword
 
-Make crossword puzzles in multiple languages and scripts.
+Make crossword puzzles in Arabic script (can be Arabic, Persian, Urdu, or other languages using Arabic script)
 
-<strong><a href="http://mapmeld.github.io/crossword-unicode/">Burmese/Myanmar Version</a></strong> supporting Unicode and
-Zawgyi fonts.
+<img src="http://a3.mzstatic.com/us/r30/Purple/v4/7b/62/32/7b6232a9-244b-ac8f-6751-2fa317041cee/screen320x480.jpeg" style="float: left;"/>
 
-<img src="http://i.imgur.com/LCKxGpu.png" width="650"/>
+Most Arabic crossword puzzles (like this one) separate out the letters so that they can be read in horizontal and vertical directions. Instead, I got to thinking that the words
+should intersect on the blank space, or the cut in certain Arabic words.
 
-## Also in Nepali and Tamil
-
-<strong><a href="http://mapmeld.github.io/crossword-unicode/nepali.html">Nepali Version</a></strong> including Preeti font
-
-<strong><a href="http://mapmeld.github.io/crossword-unicode/tamil.html">Tamil Version</a></strong>
+As an example, the word 'Al-Arabiya' is like this: العَرَبِيَّة‎‎ There are
+two gaps, one between the A and L, and then the between the R[a] and B
 
 ## Usage
 
@@ -76,25 +73,16 @@ game.addWord(answer, function(err, clueAnchor, direction) {
 
 Make crosswords from a word list using command line.
 
-Prerequisites: NodeJS and fonts which support your language (preferably Noto Sans Myanmar, Noto Sans Devanagari,
-  and Noto Sans Tamil, included in the styles directory of this project)
+Prerequisites: NodeJS and fonts which support your language (preferably Noto Sans Arabic)
 
 ```bash
 npm install crossword -g
-crosswordjs wordlist.txt output.png
+crosswordar wordlist.txt output.png
 
 # more custom setup
 # 20 columns wide, 15 rows high
-# myanmar (other languages supported: ne Nepali, ta Tamil)
-xwordjs wordlist.txt output.png -w 20 -h 15 -l my
+crosswordar wordlist.txt output.png -w 20 -h 15
 ```
-
-## Built with open source software
-
-* <a href="https://github.com/Rabbit-Converter/Rabbit-Node">Rabbit-Node</a> Unicode-Zawgyi converter
-* <a href="https://github.com/mapmeld/myanmar-numbers-js">Myanmar Numbers</a>
-* <a href="https://github.com/mapmeld/preeti">Preeti</a> for Nepali typing
-* jQuery
 
 ## License
 

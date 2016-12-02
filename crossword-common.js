@@ -10,8 +10,27 @@ var Crossword = function(canvas, width, height) {
   this.downFirst = (Math.random() > 0.5);
   this.width = width;
   this.height = height;
-  this.numberTransform = function(n) {
-    return n;
+  this.numberTransform = function(txt) {
+    txt += '';
+    var numbers = {
+      '٠': 0,
+      '١': 1,
+      '٢': 2,
+      '٣': 3,
+      '٤': 4,
+      '٥': 5,
+      '٦': 6,
+      '٧': 7,
+      '٨': 8,
+      '٩': 9
+    };
+
+    var keys = Object.keys(numbers);
+    for (var n = 0; n <= keys.length; n++) {
+      var re = new RegExp(numbers[keys[n]] + "", "g");
+      txt = txt.replace(re, keys[n]);
+    }
+    return txt;
   };
   return this;
 };
@@ -39,8 +58,24 @@ Crossword.prototype.drawGrid = function(x, y) {
   var letter = this.grid[x][y];
   this.ctx.fillStyle = '#fff';
   this.ctx.fillRect(x * 40 + 2, y * 40 + 2, 36, 36);
+  /*
+  // was drawing a baseline, but doesn't work with A, unnecessary
+  if (letter.direction && letter.letter !== 'x') {
+    this.ctx.fillStyle = '#ccc';
+    if (letter.direction === 'horizontal') {
+      this.ctx.fillRect(x * 40 + 14, y * 40 + 25, 12, 4);
+    } else {
+      this.ctx.fillRect(x * 40 + 25, y * 40 + 14, 4, 12);
+    }
+  }
+  */
+  if (letter.letter === 'x') {
+    // mark blanks instead
+    this.ctx.fillStyle = '#ccc';
+    this.ctx.fillRect(x * 40 + 17, y * 40 + 17, 6, 6);
+  }
   if (letter.label) {
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = '#f00';
     this.ctx.fillText(this.numberTransform(letter.label), x * 40 + 10, y * 40 + 20);
   }
 };
@@ -99,7 +134,7 @@ Crossword.prototype.startDownIn = function(word, row, col) {
   for (var char = 0; char < word.length; char++) {
     var y = row * 1 + char * 1;
     var letter = word[char];
-    if (this.grid[x][y] && this.grid[x][y].letter !== letter) {
+    if (this.grid[x][y] && (this.grid[x][y].letter !== letter || this.grid[x][y].letter !== 'x')) {
       return false;
     }
     if (!this.grid[x][y] && ((x > 0 && this.grid[x - 1][y]) || (x < this.width - 1 && this.grid[x * 1 + 1][y]))) {
@@ -114,7 +149,7 @@ Crossword.prototype.startDownIn = function(word, row, col) {
     var y = row * 1 + char * 1;
     var letter = word[char];
     if (!this.grid[x][y]) {
-      this.grid[x][y] = { letter: letter };
+      this.grid[x][y] = { letter: letter, direction: 'vertical' };
       this.drawGrid(x, y);
     }
   }
@@ -123,9 +158,6 @@ Crossword.prototype.startDownIn = function(word, row, col) {
   var clueNum = forceLabel || (this.anchor++);
   this.grid[col][row].label = clueNum;
   this.drawGrid(col, row);
-
-  // add an 'end' mark so no one puts a square underneath it
-  this.grid[col][row * 1 + word.length - 1].end = true;
 
   this.previousWords.push([col, row, 'down', word]);
   return { direction: 'down', anchor: this.numberTransform(clueNum) };
@@ -145,16 +177,16 @@ Crossword.prototype.startAcrossIn = function(word, row, col) {
     // letter right of ends
     return false;
   }
-  if (this.grid[col][row] && this.grid[col][row].label) {
-    // another starts here - that's OK but we reuse the label
-    forceLabel = this.grid[col][row].label;
+  if (this.grid[col * 1 + word.length - 1][row] && this.grid[col * 1 + word.length - 1][row].label) {
+    // another starts on the rightmost square - that's OK but we reuse the label
+    forceLabel = this.grid[col * 1 + word.length - 1][row].label;
   }
 
   var y = row;
   for (var char = 0; char < word.length; char++) {
     var x = col * 1 + char * 1;
-    var letter = word[char];
-    if (this.grid[x][y] && (this.grid[x][y].letter !== letter)) {
+    var letter = word[word.length - char - 1];
+    if (this.grid[x][y] && (this.grid[x][y].letter !== letter || this.grid[x][y].letter !== 'x')) {
       return false;
     }
     if (!this.grid[x][y] && ((y > 0 && this.grid[x][y - 1]) || (y < this.height - 1 && this.grid[x][y * 1 + 1]))) {
@@ -166,20 +198,17 @@ Crossword.prototype.startAcrossIn = function(word, row, col) {
   // confirmed
   for (var char = 0; char < word.length; char++) {
     var x = col * 1 + char * 1;
-    var letter = word[char];
+    var letter = word[word.length - char - 1];
     if (!this.grid[x][y]) {
-      this.grid[x][y] = { letter: letter };
+      this.grid[x][y] = { letter: letter, direction: 'horizontal' };
       this.drawGrid(x, y);
     }
   }
 
   // first square gets a number
   var clueNum = forceLabel || (this.anchor++);
-  this.grid[col][row].label = clueNum;
-  this.drawGrid(col, row);
-
-  // add an 'end' mark so no one puts a square right of it
-  this.grid[col * 1 + word.length - 1][row].end = true;
+  this.grid[col * 1 + word.length - 1][row].label = clueNum;
+  this.drawGrid(col * 1 + word.length - 1, row);
 
   this.previousWords.push([col, row, 'across', word]);
   return { direction: 'across', anchor: this.numberTransform(clueNum) };
@@ -187,8 +216,13 @@ Crossword.prototype.startAcrossIn = function(word, row, col) {
 
 Crossword.prototype.addWord = function(answer, callback) {
   // magic RegEx to split strings into letters
-  var accents_and_vowels = "[:\u0300-\u036F\u0902\u093E-\u0944\u0947\u0948\u094B\u094C\u0962\u0963\u0981\u09BC\u09BE-\u09C4\u09C7\u09C8\u09CB\u09CC\u09D7\u09E2\u09E3\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD7\u102B-\u1032\u1036-\u1038\u103A-\u103E\u1056-\u1059\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]";
-  var combo_characters = "[\u094D\u09CD\u1039]";
+  var blanks_next = ["ا","ر","د","ذ","ز","و","أ","إ","آ"];
+  var arabic_accents = "[:َِّ‎]";
+  var accents_and_vowels = "[::َِّ‎\u0300-\u036F\u0902\u093E-\u0944\u0947\u0948\u094B\u094C\u0962\u0963\u0981\u09BC\u09BE-\u09C4\u09C7\u09C8\u09CB\u09CC\u09D7\u09E2\u09E3\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD7\u102B-\u1032\u1036-\u1038\u103A-\u103E\u1056-\u1059\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]";
+  var combo_characters = "[]";
+
+  // make LA one unit that doesn't split
+  // hamza alone?
 
   var word = [];
   while (answer.length) {
@@ -197,6 +231,10 @@ Crossword.prototype.addWord = function(answer, callback) {
     var block = (new RegExp(blockFinder)).exec(answer)[0];
     word.push(block);
     answer = answer.substring(block.length);
+    if (answer.length && blanks_next.indexOf(block[0]) > -1) {
+      // insert blank
+      word.push('x');
+    }
   }
 
   // word must be longer than one block

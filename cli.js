@@ -2,18 +2,16 @@
 
 const fs = require('fs');
 const program = require('commander');
-const myanmarNumbers = require('myanmar-numbers');
 
 const Canvas = require('canvas');
 const Crossword = require('./crossword-common.js');
 
 // get user config
 program
-  .version('1.0.0')
+  .version('1.0.3')
   .arguments('<wordList> <saveImage>')
   .option('-w --width <number>', 'columns of crossword', /(\d+)/, 20)
   .option('-h --height <number>', 'rows of crossword', /(\d+)/, 15)
-  .option('-l --language <code>', 'en,my,ne,ta', /(.*)/, 'en')
   .parse(process.argv);
 
 if (!program.args.length) {
@@ -43,60 +41,7 @@ fs.readFile(sourceFile, { encoding: 'utf-8' }, function (err, srcText) {
   var game = new Crossword(canv, program.width, program.height);
   game.clearCanvas(true);
 
-  // detect language?
-  if (program.language === 'my') {
-    game.setNumberTransform(function(n) {
-      return myanmarNumbers(n, 'my');
-    });
-  } else if (program.language === 'ne') {
-    game.setNumberTransform(function(txt) {
-      txt += '';
-      var numbers = {
-        '०': 0,
-        '१': 1,
-        '२': 2,
-        '३': 3,
-        '४': 4,
-        '५': 5,
-        '६': 6,
-        '७': 7,
-        '८': 8,
-        '९': 9
-      };
-
-      var keys = Object.keys(numbers);
-      for (var n = 0; n <= keys.length; n++) {
-        var re = new RegExp(numbers[keys[n]] + "", "g");
-        txt = txt.replace(re, keys[n]);
-      }
-      return txt;
-    });
-  } else if (program.language === 'ta') {
-    game.setNumberTransform(function(txt) {
-      txt += '';
-      txt = txt.replace('100', '௱');
-      txt = txt.replace('10', '௰');
-      var numbers = {
-        '௦': 0,
-        '௧': 1,
-        '௨': 2,
-        '௩': 3,
-        '௪': 4,
-        '௫': 5,
-        '௬': 6,
-        '௭': 7,
-        '௮': 8,
-        '௯': 9
-      };
-
-      var keys = Object.keys(numbers);
-      for (var n = 0; n <= keys.length; n++) {
-        var re = new RegExp(numbers[keys[n]] + "", "g");
-        txt = txt.replace(re, keys[n]);
-      }
-      return txt;
-    });
-  }
+  // Arabic numbers?
 
   function addClue(i) {
     if (i >= lines.length) {

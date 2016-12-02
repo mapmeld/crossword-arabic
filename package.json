@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "Generate crossword puzzles in Arabic script",
   "bin": {
-    "crosswordjs": "cli.js"
+    "crosswordar": "cli.js"
   },
   "main": "crossword-common.js",
   "author": "Nick Doiron <ndoiron@mapmeld.com>",
