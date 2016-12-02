@@ -1,8 +1,0 @@
-@font-face {
-  font-family: 'NotoSansBengali';
-  src: url(NotoSansBengali/NotoSansBengali-Regular.ttf);
-}
-
-html, body, span, strong {
-  font-family: 'NotoSansBengali', sans-serif;
-}
