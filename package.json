@@ -1,7 +1,7 @@
 {
-  "name": "crossword",
-  "version": "1.0.2",
-  "description": "Generate multilingual crossword puzzles",
+  "name": "crossword-arabic",
+  "version": "1.0.3",
+  "description": "Generate crossword puzzles in Arabic script",
   "bin": {
     "crosswordjs": "cli.js"
   },
@@ -10,19 +10,20 @@
   "license": "MIT",
   "dependencies": {
     "canvas": "^1.3.7",
-    "commander": "^2.9.0",
-    "myanmar-numbers": "^1.1.3"
+    "commander": "^2.9.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mapmeld/crossword-unicode.git"
+    "url": "git+https://github.com/mapmeld/crossword-arabic.git"
   },
   "keywords": [
     "crossword",
-    "unicode"
+    "unicode",
+    "arabic",
+    "persian"
   ],
   "bugs": {
-    "url": "https://github.com/mapmeld/crossword-unicode/issues"
+    "url": "https://github.com/mapmeld/crossword-arabic/issues"
   },
-  "homepage": "https://github.com/mapmeld/crossword-unicode#readme"
+  "homepage": "https://github.com/mapmeld/crossword-arabic#readme"
 }
