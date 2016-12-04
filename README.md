@@ -2,6 +2,8 @@
 
 Make crossword puzzles in Arabic script (can be Arabic, Persian, Urdu, or other languages using Arabic script)
 
+Based on my earlier Unicode crossword https://github.com/mapmeld/crossword-unicode
+
 ### Problems with regular crosswords
 
 <img src="http://a3.mzstatic.com/us/r30/Purple/v4/7b/62/32/7b6232a9-244b-ac8f-6751-2fa317041cee/screen320x480.jpeg" style="float: left;"/>
