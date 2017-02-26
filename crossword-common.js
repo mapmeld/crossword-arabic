@@ -217,7 +217,7 @@ Crossword.prototype.startAcrossIn = function(word, row, col) {
 Crossword.prototype.addWord = function(answer, callback) {
   // magic RegEx to split strings into letters
   var blanks_next = ["ا","ر","د","ذ","ز","و","أ","إ","آ"];
-  var arabic_accents = "َِّ‎";
+  var arabic_accents = "َِّ‎ْ";
   var accents_and_vowels = "[::َِّ‎\u0300-\u036F\u0902\u093E-\u0944\u0947\u0948\u094B\u094C\u0962\u0963\u0981\u09BC\u09BE-\u09C4\u09C7\u09C8\u09CB\u09CC\u09D7\u09E2\u09E3\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD7\u102B-\u1032\u1036-\u1038\u103A-\u103E\u1056-\u1059\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]";
   var combo_characters = "[]";
 
