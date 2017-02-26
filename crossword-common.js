@@ -217,15 +217,24 @@ Crossword.prototype.startAcrossIn = function(word, row, col) {
 Crossword.prototype.addWord = function(answer, callback) {
   // magic RegEx to split strings into letters
   var blanks_next = ["ا","ر","د","ذ","ز","و","أ","إ","آ"];
-  var arabic_accents = "[:َِّ‎]";
+  var arabic_accents = "َِّ‎";
   var accents_and_vowels = "[::َِّ‎\u0300-\u036F\u0902\u093E-\u0944\u0947\u0948\u094B\u094C\u0962\u0963\u0981\u09BC\u09BE-\u09C4\u09C7\u09C8\u09CB\u09CC\u09D7\u09E2\u09E3\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD7\u102B-\u1032\u1036-\u1038\u103A-\u103E\u1056-\u1059\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]";
   var combo_characters = "[]";
 
   // make LA one unit that doesn't split
-  // hamza alone?
-
+  if (answer.substring(0, 2) === 'لا') {
+    answer = answer.replace('لا', 'ﻻ');
+  }
+  answer = answer.replace(/\sلا/g, 'ﻻ');
+  answer = answer.replace(/لا/g, 'ﻼ');
+  
   var word = [];
   while (answer.length) {
+    // avoid counting tashkil marks
+    if (arabic_accents.indexOf(answer[0]) > -1) {
+      answer = answer.substring(1);
+      continue;
+    }
     var startChar = answer[0];
     var blockFinder = startChar + "(?:" + accents_and_vowels + "+)?" + "(" + combo_characters + "\\W(" + accents_and_vowels + ")?)?";
     var block = (new RegExp(blockFinder)).exec(answer)[0];
