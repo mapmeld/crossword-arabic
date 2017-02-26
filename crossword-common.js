@@ -225,7 +225,7 @@ Crossword.prototype.addWord = function(answer, callback) {
   if (answer.substring(0, 2) === 'لا') {
     answer = answer.replace('لا', 'ﻻ');
   }
-  answer = answer.replace(/\sلا/g, 'ﻻ');
+  answer = answer.replace(/\sلا/g, ' ﻻ');
   answer = answer.replace(/لا/g, 'ﻼ');
   
   var word = [];
