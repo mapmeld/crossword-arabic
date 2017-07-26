@@ -2,7 +2,7 @@
 
 Make crossword puzzles in Arabic script (can be Arabic, Persian, Urdu, or other languages using Arabic script)
 
-Based on my earlier Unicode crossword https://github.com/mapmeld/crossword-unicode
+## Partly Deprecated: you can create old-style rtl crosswords with the Unicode crossword module https://github.com/mapmeld/crossword-unicode
 
 ### Problems with regular crosswords
 
