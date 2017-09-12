@@ -1,5 +1,7 @@
 # Crossword-Arabic
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mapmeld/crossword-arabic.svg)](https://greenkeeper.io/)
+
 Make crossword puzzles in Arabic script (can be Arabic, Persian, Urdu, or other languages using Arabic script)
 
 ## Partly Deprecated: you can create old-style rtl crosswords with the Unicode crossword module https://github.com/mapmeld/crossword-unicode
